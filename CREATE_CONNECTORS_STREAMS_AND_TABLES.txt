@@ -1,0 +1,137 @@
+CREATE CONNECTORS:
+===================
+
+CREATE SOURCE CONNECTOR datagen_clickstream_codes WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream_codes',
+  'quickstart'               = 'clickstream_codes',
+  'maxInterval'              = '20',
+  'format'                   = 'AVRO',
+  'key.converter'            = 'org.apache.kafka.connect.converters.IntegerConverter');
+
+CREATE SOURCE CONNECTOR datagen_clickstream_users WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream_users',
+  'quickstart'               = 'clickstream_users',
+  'maxInterval'              = '10',
+  'format'                   = 'AVRO',
+  'key.converter'            = 'org.apache.kafka.connect.converters.IntegerConverter');
+
+CREATE SOURCE CONNECTOR datagen_clickstream WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream',
+  'quickstart'               = 'clickstream',
+  'maxInterval'              = '30',
+  'format'                   = 'AVRO');
+
+===================================================================
+
+CREATE STREAMS AND TABLES:
+===========================
+
+USERS TABLE:
+============
+CREATE TABLE USERS
+   (USERID VARCHAR PRIMARY KEY, REGISTERTIME BIGINT, GENDER VARCHAR, REGIONID VARCHAR)
+   WITH (KAFKA_TOPIC='users', KEY_FORMAT='KAFKA', PARTITIONS=2, REPLICAS=1, VALUE_FORMAT='AVRO');
+
+
+CREATE STREAM clickstream (
+        _time bigint,
+        time varchar,
+        ip varchar,
+        request varchar,
+        status int,
+        userid int,
+        bytes bigint,
+        agent varchar
+    ) with (
+        kafka_topic = 'clickstream',
+        value_format = 'AVRO'
+    );
+
+
+STREAM CODE LOOKUP TABLE:
+=========================
+CREATE TABLE clickstream_codes (
+        code int primary key,
+        definition varchar
+    ) with (
+        kafka_topic = 'clickstream_codes',
+        value_format = 'AVRO'
+    );
+
+USERS LOOKUP TABLE:
+=========================
+CREATE TABLE WEB_USERS (
+        user_id int primary key,
+        registered_At BIGINT,
+        username varchar,
+        first_name varchar,
+        last_name varchar,
+        city varchar,
+        level varchar
+    ) with (
+        kafka_topic = 'clickstream_users',
+        value_format = 'AVRO'
+    );
+
+---------------------------------------------------------------------------------------------------
+MATERIALZED STREAM VIEWS:
+---------------------------------------------------------------------------------------------------
+
+ADDITIONAL USER INFORMATION:
+============================
+CREATE STREAM USER_CLICKSTREAM AS
+    SELECT
+        userid,
+        u.username,
+        ip,
+        u.city,
+        request,
+        status,
+        bytes
+    FROM clickstream c
+        LEFT JOIN web_users u ON c.userid = u.user_id;
+
+MORE INFORMATION ABOUT ERROR CODES:
+===================================
+CREATE STREAM ENRICHED_ERROR_CODES AS
+    SELECT
+        code,
+        definition
+    FROM clickstream
+        LEFT JOIN clickstream_codes ON clickstream.status = clickstream_codes.code;
+
+---------------------------------------------------------------------------------------------------
+MATERIALIZED TABLE VIEWS:
+---------------------------------------------------------------------------------------------------
+
+
+EVENTS PER MINUTE FOR EACH USER:
+===============================
+
+CREATE table events_per_min AS
+    SELECT
+        userid as k1,
+        AS_VALUE(userid) as userid,
+        WINDOWSTART as EVENT_TS,
+        count(*) AS events
+    FROM clickstream window TUMBLING (size 60 second)
+    GROUP BY userid;
+
+HTML PAGES MINUTE PER USER:
+===========================
+CREATE TABLE pages_per_min AS
+    SELECT
+        userid as k1,
+        AS_VALUE(userid) as userid,
+        WINDOWSTART as EVENT_TS,
+        count(*) AS pages
+    FROM clickstream WINDOW HOPPING (size 60 second, advance by 5 second)
+    WHERE request like '%html%'
+    GROUP BY userid;
+
+
+=======================================================
+
