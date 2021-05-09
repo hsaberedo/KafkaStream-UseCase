@@ -1,0 +1,77 @@
+
+
+CREATE STREAM RATINGS
+(RATINGID VARCHAR, USERID VARCHAR, STARID VARCHAR, ROUTEID VARCHAR,RATINGTIME BIGINT, CHANNEL VARCHAR, MESSAGE VARCHAR)
+WITH (KAFKA_TOPIC='ratings', VALUE_FORMAT='AVRO');
+
+CREATE STREAM RATINGSS
+(ROWKEY BIGINT KEY, CHANNEL VARCHAR, MESSAGE VARCHAR)
+WITH (KAFKA_TOPIC='ratings', VALUE_FORMAT='AVRO');
+
+
+
+RATINGID       |USERID         |STARID         |ROUTEID        |RATINGTIME     |CHANNEL        |MESSAGE
+
+CREATE STREAM PAGEVIEWS (ROWKEY BIGINT KEY, USERID STRING, PAGEID STRING) 
+WITH (KAFKA_TOPIC='pageviews', KEY_FORMAT='KAFKA', PARTITIONS=2, REPLICAS=1, VALUE_FORMAT='AVRO');
+
+
+CREATE TABLE USERS
+   (USERID VARCHAR PRIMARY KEY, REGISTERTIME BIGINT, GENDER VARCHAR, REGIONID VARCHAR)
+   WITH (KAFKA_TOPIC='users', KEY_FORMAT='KAFKA', PARTITIONS=2, REPLICAS=1, VALUE_FORMAT='AVRO');
+
+CREATE STREAM PAGEVIEWS_MALE
+   AS SELECT USERS.USERID AS USERID, PAGEID, REGIONID
+   FROM PAGEVIEWS LEFT JOIN USERS ON PAGEVIEWS.USERID = USERS.USERID
+   WHERE GENDER = 'MALE'
+   EMIT CHANGES;
+
+CREATE STREAM PAGEVIEWS_OTHER
+   AS SELECT USERS.USERID AS USERID, PAGEID, REGIONID
+   FROM PAGEVIEWS LEFT JOIN USERS ON PAGEVIEWS.USERID = USERS.USERID
+   WHERE GENDER = 'OTHER'
+   EMIT CHANGES;
+=======================
+CREATE SOURCE CONNECTOR datagen_clickstream_codes WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream_codes',
+  'quickstart'               = 'clickstream_codes',
+  'maxInterval'              = '20',
+  'format'                   = 'json',
+  'key.converter'            = 'org.apache.kafka.connect.converters.IntegerConverter');
+
+CREATE SOURCE CONNECTOR datagen_clickstream_users WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream_users',
+  'quickstart'               = 'clickstream_users',
+  'maxInterval'              = '10',
+  'format'                   = 'json',
+  'key.converter'            = 'org.apache.kafka.connect.converters.IntegerConverter');
+
+CREATE SOURCE CONNECTOR datagen_clickstream WITH (
+  'connector.class'          = 'io.confluent.kafka.connect.datagen.DatagenConnector',
+  'kafka.topic'              = 'clickstream',
+  'quickstart'               = 'clickstream',
+  'maxInterval'              = '30',
+  'format'                   = 'json');
+========================================
+RATING COUNT BY CHANNEL
+=======================
+CREATE TABLE RATINGS_PER_CHANNEL WITH (KAFKA_TOPIC='RATINGS_PER_CHANNEL', PARTITIONS=1, REPLICAS=1) AS SELECT
+  RATINGS.CHANNEL CHANNEL,
+  COUNT(*) NUMRATINGS
+FROM RATINGS RATINGS
+WINDOW TUMBLING ( SIZE 30 SECONDS ) 
+GROUP BY RATINGS.CHANNEL
+HAVING (COUNT(*) > 1)
+EMIT CHANGES;
+
+
+CREATE TABLE RATINGS_PER_CHANNEL WITH (KAFKA_TOPIC='RATINGS_PER_CHANNEL', PARTITIONS=1, REPLICAS=1) AS SELECT
+  RATINGS.CHANNEL CHANNEL,
+  COUNT(*) NUMRATINGS
+FROM RATINGS RATINGS
+WINDOW TUMBLING ( SIZE 30 SECONDS ) 
+GROUP BY RATINGS.CHANNEL
+HAVING (COUNT(*) > 1)
+EMIT CHANGES;
