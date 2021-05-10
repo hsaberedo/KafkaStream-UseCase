@@ -10,12 +10,21 @@ Download or copy the contents of the Confluent Platform all-in-one Docker Compos
 
 curl --silent --output docker-compose.yml \
   https://raw.githubusercontent.com/confluentinc/cp-all-in-one/6.1.1-post/cp-all-in-one/docker-compose.yml
+
 Start Confluent Platform with the -d option to run in detached mode:
 
 ![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/Confluent_PlatformDownload.PNG)
 
+Use the following commands and sequence to start the docker:
+```
+* Start the docker: sudo /etc/init.d/docker start
 
-docker-compose up -d
+* Check status:     sudo /etc/init.d/docker status
+
+* start docker-compose Confluent Platform: docker-compose up -d
+```
+
+
 The above command is used to start Confluent Platform with a separate container for each Confluent Platform component. The output is shown as follows:
 
 ![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/End-Of_Start_Confluent_Platform-docker-compose-up-d.PNG)
