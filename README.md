@@ -156,5 +156,42 @@ In this step, I used ksqlDB CLi to create a stream for the _clickstream_  topic.
 
 ![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/ksql_create_stream_clicksteam.PNG)
 
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/ksql_create_stream_user_and_errorcodes.PNG)
 
-4. Copy the following code into the editor window and click **Run query** to create the USERS table. Table names are not case-sensitive.
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/ksql_create_stream_codes_webusers.PNG)
+
+
+4. Copy the following code into the editor window and click **Run query** to create the USERS table using ksqlDB web console and CLi consoles. Table names are not case-sensitive.
+
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/create_table_users.PNG)
+
+Other create table queries:
+
+```
+STREAM CODE LOOKUP TABLE:
+=========================
+CREATE TABLE clickstream_codes (
+        code int primary key,
+        definition varchar
+    ) with (
+        kafka_topic = 'clickstream_codes',
+        value_format = 'AVRO'
+    );
+
+USERS LOOKUP TABLE:
+=========================
+CREATE TABLE WEB_USERS (
+        user_id int primary key,
+        registered_At BIGINT,
+        username varchar,
+        first_name varchar,
+        last_name varchar,
+        city varchar,
+        level varchar
+    ) with (
+        kafka_topic = 'clickstream_users',
+        value_format = 'AVRO'
+    );
+```
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/some_create_table_queries.PNG)
+
