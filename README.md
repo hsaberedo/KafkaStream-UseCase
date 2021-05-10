@@ -114,3 +114,42 @@ g. Click **Continue**.
 h. Review the connector configuration and click **Launch**.
 
 
+The following other connectors where created with their equivalent datagens respectively:
+* clickstream_codes:  datagen_clickstream_codes
+* clickstream_users:  datagen_clickstream_users
+
+
+#  Creating and Writing to a Stream and Table using ksqlDB
+
+These were carried out using the ksqlDB web console and the CLi.
+CLi used:
+ksqlDB CLI from your Docker container with this command: _**docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088**_.
+
+**Create Streams and Tables**
+
+The following streams were created:
+* clickstream
+* USER_CLICKSTREAM
+* ENRICHED_ERROR_CODES
+* USERS
+
+And the following tables were created:
+* USERS
+* clickstream_codes
+* WEB_USERS
+* events_per_min
+* pages_per_min
+
+**NB: **
+_**The streams and tables creation scripts are in file CREATE_CONNECTORS_STREAMS_AND_TABLES.txt in this repository.**_
+
+And a sample step is selected to show how a stream and a table is created.
+
+In this step, you use ksqlDB to create a stream for the pageviews topic and a table for the users topic.
+
+In the navigation bar, click ksqlDB.
+
+Select the ksqlDB application.
+
+Copy the following code into the editor window and click Run query to create the PAGEVIEWS stream. Stream names are not case-sensitive.
+
