@@ -193,5 +193,12 @@ CREATE TABLE WEB_USERS (
         value_format = 'AVRO'
     );
 ```
-![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/some_create_table_queries.PNG)
+
+
+#  Write Queries
+
+
+#  
+
+
 
