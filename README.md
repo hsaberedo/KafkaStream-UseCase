@@ -84,6 +84,33 @@ g. Click Continue.
 
 h. Review the connector configuration and click Launch.
 
+An example was the one done for users shown below. Similar was done for cliskstream connector.
 
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/users_genfile.PNG)
+
+
+
+2. Run the second instance of the **Kafka Connect Datagen** connector to produce Kafka data to the _**users**_ topic in AVRO format.
+
+a. In the navigation bar, click **Connect**.
+
+b. Click the _**connect-default**_ cluster in the **Connect Clusters** list.
+
+c. Click **Add connector**.
+
+d. Select the _**DatagenConnector**_ tile.
+
+e. In the **Name** field, enter _**datagen-users**_ as the name of the connector.
+
+f. Enter the following configuration values:
+
+* **Key converter class:** org.apache.kafka.connect.storage.StringConverter
+* **kafka.topic:** users
+* **max.interval:** 1000
+* **quickstart:** users
+
+g. Click **Continue**.
+
+h. Review the connector configuration and click **Launch**.
 
 
