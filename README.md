@@ -10,6 +10,10 @@ Download or copy the contents of the Confluent Platform all-in-one Docker Compos
 
 curl --silent --output docker-compose.yml \
   https://raw.githubusercontent.com/confluentinc/cp-all-in-one/6.1.1-post/cp-all-in-one/docker-compose.yml
+  
+My Docker yaml file also included in the repository:
+_**docker-compose.yaml**_
+
 
 Start Confluent Platform with the -d option to run in detached mode:
 
@@ -249,8 +253,18 @@ b. Create a non-persistent query that returns data from a stream with the result
 c. Enter the same select queries listed above as executed in the CLi prompt.
 
 
+# My Flow
 
-#  
+![alt text](My_Flow.PNG)
+
+
+# Conclusion
+
+Apache Kafka and ksqlDB are rich and can be used to achieve different Data Pipeline usecases. 
+
+
+
+  
 
 
 
