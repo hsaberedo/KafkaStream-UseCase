@@ -1,8 +1,21 @@
 # KafkaStream-UseCase
 A Data Pipeline demo on the use of Kafka Streams to simulate a use case on Confluence using sample data. 
 
- # Usecase
+ # Business case
 This project creates an environment setup used to carry out clickstream analysis from a Docker container.
+
+Below are some of the information that can be extracted from the tables:
+
+* Among others, One of the tables created, CLICK_USER_SESSIONS, shows a count of user activity for a given user session. The clickstream is used to simulates user sessions in a web connectivity.
+
+* The demo also helps us to have information about web users, their cities, levels and location of registration.
+
+* Can be used to determine the type and count of web events carried out by a user.
+
+* Can be used to determine the responses received by a web user. 
+
+All these are very useful information to understand user experiences about a web access.
+
 
 #  Download and Start Confluent Platform Using Docker
 
