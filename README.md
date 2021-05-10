@@ -204,7 +204,50 @@ CREATE TABLE WEB_USERS (
 ```
 
 
-#  Write Queries
+# Queries Execution
+
+In this step, I executed several ksqlDB queries against my streams and tables using ksqlDB CLi console.
+
+1. Connect to the ksqlDB CLi.
+
+2. Results of the queries executed are shown as follows:
+
+```
+select * from users emit changes limit 3;
+
+select * from clickstream emit changes limit 3;
+
+select * from clickstream_codes emit changes limit 10;
+
+select * from web_users emit changes limit 5;
+
+select * from click_user_sessions emit changes limit 5;
+```
+
+![alt text](query_output_users_limit10.PNG)
+
+![alt text](select_clickstreamcodes.PNG)
+
+![alt text](select_clickusersessions.PNG)
+
+![alt text](select_webusers.PNG)
+
+
+The queries can also be executed using the ksqlDB web confluent web console as described below:
+
+The setting instructs ksqlDB queries to read all available topic data from the beginning. This configuration was used for each subsequent query. 
+
+
+* In the **Editor** tab, click **Add query properties** to add a custom query property.
+
+* Set the _auto.offset.reset_ parameter to _Earliest_.
+ 
+a. Click Stop to stop the current running query.
+
+b. Create a non-persistent query that returns data from a stream with the results limited to a maximum of three rows:
+
+c. Enter the same select queries listed above as executed in the CLi prompt.
+
 
 
 #  
