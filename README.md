@@ -48,6 +48,40 @@ It took take a minute or two for Control Center to come online.
 
 ![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/Control_Center_NewTopic.PNG)
 
-4. In the Topic name field, specify pageviews and click Create with defaults.
+4. In the Topic name field, I specified **pageviews** and clicked Create with defaults.
 
 Note that topic names are case-sensitive.
+
+5. In the navigation bar, click **Topics** to open the topics list, and then click **Add a topic**.
+
+6. In the Topic name field, specify **users** and click **Create with defaults.**
+
+# Install a Kafka Connector and Generate Sample Data
+
+In this step, Kafka Connect was used to run a demo source connector called **kafka-connect-datagen** that creates sample data for the Kafka topics **clickstreams** and ** users**.
+
+1. Run the first instance of the Kafka Connect Datagen connector to produce Kafka data to the clickstreams topic in AVRO format.
+
+a. In the navigation bar, click Connect.
+
+b. Click the connect-default cluster in the Connect Clusters list.
+
+c. Click Add connector.
+
+d. Select the DatagenConnector tile.
+
+
+e. In the Name field, enter datagen-pageviews as the name of the connector.
+
+f. Enter the following configuration values:
+
+* **Key converter class**: org.apache.kafka.connect.storage.StringConverter.
+* **kafka.topic**: clickstream.
+* **max.interval**: 100.
+* **quickstart**: clickstream.
+
+g. Click Continue.
+
+h. Review the connector configuration and click Launch.
+
+
