@@ -145,11 +145,16 @@ _**The streams and tables creation scripts are in file CREATE_CONNECTORS_STREAMS
 
 And a sample step is selected to show how a stream and a table is created.
 
-In this step, you use ksqlDB to create a stream for the pageviews topic and a table for the users topic.
 
-In the navigation bar, click ksqlDB.
+In this step, I used ksqlDB CLi to create a stream for the _clickstream_  topic.
 
-Select the ksqlDB application.
+1.Connect to **ksqlDB CLi** with this command: _**docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088**_.
 
-Copy the following code into the editor window and click Run query to create the PAGEVIEWS stream. Stream names are not case-sensitive.
+2. Paste the create topic for clickstream unto the CLi prompt and execute as below:
 
+3. Copy the following code into the editor window and click **Run query** to create the CLICKSTREAM stream. Stream names are not case-sensitive.
+
+![alt text](https://github.com/hsaberedo/KafkaStream-UseCase/blob/main/ksql_create_stream_clicksteam.PNG)
+
+
+4. Copy the following code into the editor window and click **Run query** to create the USERS table. Table names are not case-sensitive.
