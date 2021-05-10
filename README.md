@@ -56,11 +56,11 @@ Note that topic names are case-sensitive.
 
 6. In the Topic name field, specify **users** and click **Create with defaults.**
 
-# Install a Kafka Connector and Generate Sample Data
+# Installation of a Kafka Connector and Generating Sample Data
 
 In this step, Kafka Connect was used to run a demo source connector called **kafka-connect-datagen** that creates sample data for the Kafka topics **clickstreams** and ** users**.
 
-1. Run the first instance of the Kafka Connect Datagen connector to produce Kafka data to the clickstreams topic in AVRO format.
+1. Run the first instance of the Kafka Connect Datagen connector to produce Kafka data to the clickstream topic in AVRO format.
 
 a. In the navigation bar, click Connect.
 
@@ -71,7 +71,7 @@ c. Click Add connector.
 d. Select the DatagenConnector tile.
 
 
-e. In the Name field, enter datagen-pageviews as the name of the connector.
+e. In the Name field, enter datagen-clickstream as the name of the connector.
 
 f. Enter the following configuration values:
 
@@ -83,5 +83,7 @@ f. Enter the following configuration values:
 g. Click Continue.
 
 h. Review the connector configuration and click Launch.
+
+
 
 
